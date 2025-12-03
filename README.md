@@ -14,5 +14,6 @@
 |------|------|------|
 | 국가목록 | GET https://date.nager.at/api/v3/AvailableCountries | 국가배열 |
 | 특정 연도 공휴일 | GET https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}
-e.g. https://date.nager.at/api/v3/PublicHolidays/2025/KR | 공휴일
+e.g. https://date.nager.at/api/v3/PublicHolidays/2025/KR | 공휴일 |
+
 별도의 ***인증‧API Key가 전혀 필요 없습니다.***

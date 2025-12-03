@@ -36,4 +36,30 @@
 
 <img width="1161" height="417" alt="image" src="https://github.com/user-attachments/assets/5d3624cc-1ffb-443c-8434-b6e349732144" />
 
+---
+
+## 📌 테이블 명세서
+
+countries
+| 필드명 | 타입 | 설명 |
+|--------|--------|--------|
+| id | bigint (PK) | 기본 키 |
+| code | varchar(10) | ISO 국가 코드 |
+| name | varchar(255) | 국가 이름 |
+
+holidays
+| 필드명 | 타입 | 설명 |
+|--------|--------|--------|
+| id | bigint (PK) | 기본 키 |
+| country_code | varchar(10) (FK → countries.code) | 국가 코드 |
+| date | date | 공휴일 날짜 |
+| local_name | varchar(255) | 현지 언어 명칭 |
+| name | varchar(255) | 영문 공휴일 명칭 |
+| fixed | boolean | 매년 동일 여부 |
+| global | boolean | 전역 공휴일 여부 |
+| type | varchar(255) | 공휴일 타입 |
+| counties | text | 적용 지역 목록 |
+| launch_year | int | 최초 지정 연도 |
+| created_at | timestamp | 등록일 |
+
 

@@ -34,7 +34,8 @@
 
 ## 📌 ERD
 
-<img width="1161" height="417" alt="image" src="https://github.com/user-attachments/assets/5d3624cc-1ffb-443c-8434-b6e349732144" />
+<img width="1187" height="426" alt="image" src="https://github.com/user-attachments/assets/e5dd8e32-a831-4985-9151-b34ee17e231c" />
+
 
 ---
 

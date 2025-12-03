@@ -11,6 +11,7 @@
 ## 📌 외부 API
 
 | 용도 | 엔드포인트 | 응답 |
+|------|------|------|
 | 국가목록 | GET https://date.nager.at/api/v3/AvailableCountries | 국가배열 |
 특정 연도 공휴일 GET https://date.nager.at/api/v3/PublicHolidays/{year}/
 {countryCode}

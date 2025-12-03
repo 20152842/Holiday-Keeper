@@ -30,4 +30,10 @@
 | GET | /api/v1/countries | 없음 | json<br>[<br>&nbsp;&nbsp;{ "code": "KR", "name": "Korea" },<br>&nbsp;&nbsp;{ "code": "US", "name": "United States" }<br>] | 국가 목록 조회 |
 | CRON | (자동 실행)<br>0 0 1 2 * | 없음 | json<br>{<br>&nbsp;&nbsp;"status": "success",<br>&nbsp;&nbsp;"syncedYears": [2024, 2025],<br>&nbsp;&nbsp;"countries": 110<br>} | 매년 1/2 01:00 전년도·금년도 공휴일 자동 동기화 |
 
+---
+
+## 📌 ERD
+
+<img width="1161" height="417" alt="image" src="https://github.com/user-attachments/assets/5d3624cc-1ffb-443c-8434-b6e349732144" />
+
 

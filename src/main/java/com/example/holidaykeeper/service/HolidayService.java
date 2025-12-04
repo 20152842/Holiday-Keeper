@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
+import com.example.holidaykeeper.external.dto.CountryResponse;
+import com.example.holidaykeeper.external.dto.NagerHolidayResponse;
 import com.example.holidaykeeper.external.service.ExternalNagerClient;
 import com.example.holidaykeeper.repository.CountryRepository;
 import com.example.holidaykeeper.repository.HolidayRepository;
@@ -23,43 +25,41 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class HolidayService {
-
+	private final ExternalNagerClient nagerClient;
 	private final CountryRepository countryRepo;
 	private final HolidayRepository holidayRepo;
 
 	private final List<Integer> TARGET_YEARS = List.of(2020,2021,2022,2023,2024,2025);
 	@Transactional
 	public Map<String, Object> bulkLoadAllCountriesRecent5Years() {
-		List<ExternalNagerClient.CountryResponse> countries = nagerClient.getAvailableCountries();
-		// save countries if not exist
-		for (var c : countries) {
-			countryRepo.findByCode(c.countryCode())
-				.orElseGet(() -> countryRepo.save(Country.builder().code(c.countryCode()).name(c.name()).build()));
+		List<CountryResponse> countries = nagerClient.getAvailableCountries();
+		for (CountryResponse c : countries) {
+			countryRepo.findByCode(c.getCountryCode())
+				.orElseGet(() -> countryRepo.save(Country.builder().code(c.getCountryCode()).name(c.getName()).build()));
 		}
 
 		int totalInserted = 0;
 		for (Integer year : TARGET_YEARS) {
-			for (var c : countries) {
-				var holidays = nagerClient.getHolidaysByYearAndCountry(year, c.countryCode());
+			for (CountryResponse c : countries) {
+				List<NagerHolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, c.getCountryCode());
 				if (holidays == null) continue;
 				List<Holiday> entities = holidays.stream().map(h -> {
-					LocalDate date = LocalDate.parse(h.date());
 					return Holiday.builder()
-						.countryCode(c.countryCode())
-						.date(date)
-						.localName(h.localName())
-						.name(h.name())
-						.fixedFlag(h.fixed())
-						.globalFlag(h.global())
-						.type(String.join(",", Optional.ofNullable(h.types()).orElse(Collections.emptyList())))
-						.counties(h.counties() == null ? null : String.join(",", h.counties()))
+						.countryCode(c.getCountryCode())
+						.date(LocalDate.parse(h.getDate()))
+						.localName(h.getLocalName())
+						.name(h.getName())
+						// fixed / global 임시처리
+						.fixed(h.getFixed())
+						.global(h.getGlobal())
+						.type(String.join(",", Optional.ofNullable(h.getTypes()).orElse(Collections.emptyList())))
+						.counties(h.getCounties() == null ? null : String.join(",", h.getCounties()))
 						.launchYear(year)
 						.createdAt(OffsetDateTime.now())
 						.build();
 				}).collect(Collectors.toList());
 
-				// Upsert approach: delete existing for that country+year then insert
-				holidayRepo.deleteByCountryCodeAndLaunchYear(c.countryCode(), year);
+				holidayRepo.deleteByCountryCodeAndLaunchYear(c.getCountryCode(), year);
 				holidayRepo.saveAll(entities);
 				totalInserted += entities.size();
 			}

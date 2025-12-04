@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.holidaykeeper.dto.HolidayDto;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
@@ -72,4 +74,44 @@ public class HolidayService {
 		result.put("totalHolidaysInserted", totalInserted);
 		return result;
 	}
+
+	public Page<HolidayDto> search(){
+		return null;
+	}
+
+	@Transactional
+	public Map<String,Object> refreshYearCountry(int year, String countryCode) {
+		List<NagerHolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
+		if (holidays == null) {
+			return Map.of("status","error","message","no data");
+		}
+		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
+
+		List<Holiday> entities = holidays.stream().map(h -> {
+			return Holiday.builder()
+				.countryCode(countryCode)
+				.date(LocalDate.parse(h.getDate()))
+				.localName(h.getLocalName())
+				.name(h.getName())
+				// fixed / global 임시처리
+				.fixed(h.getFixed())
+				.global(h.getGlobal())
+				.type(String.join(",", Optional.ofNullable(h.getTypes()).orElse(Collections.emptyList())))
+				.counties(h.getCounties() == null ? null : String.join(",", h.getCounties()))
+				.launchYear(year)
+				.createdAt(OffsetDateTime.now())
+				.build();
+		}).collect(Collectors.toList());
+
+		holidayRepo.saveAll(entities);
+
+		Map<String,Object> result = new HashMap<>();
+		result.put("status","success");
+		result.put("years", year);
+		result.put("country", countryCode);
+		result.put("updatedCount", entities.size());
+		return result;
+	}
+
+
 }

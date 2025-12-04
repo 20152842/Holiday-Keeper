@@ -9,7 +9,7 @@ import com.example.holidaykeeper.external.dto.NagerHolidayResponse;
 
 @Component
 public class HolidayMapper {
-	public Holiday toEntity(NagerHolidayResponse dto, String countryCode) {
+	public static Holiday toEntity(NagerHolidayResponse dto, String countryCode) {
 		return Holiday.builder()
 			.countryCode(countryCode)
 			.date(LocalDate.parse(dto.getDate()))

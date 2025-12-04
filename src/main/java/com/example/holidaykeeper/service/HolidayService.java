@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.holidaykeeper.dto.HolidayDto;
+import com.example.holidaykeeper.dto.HolidayMapper;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
@@ -119,6 +120,26 @@ public class HolidayService {
 		Map<String,Object> result = new HashMap<>();
 		result.put("status","success");
 		result.put("deleted", "unknown");
+		return result;
+	}
+
+	public Map<String, Object> refreshHoliday(String countryCode, int year) {
+
+		List<NagerHolidayResponse> externalData = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
+
+		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
+
+		List<Holiday> entities = externalData.stream()
+			.map(dto -> HolidayMapper.toEntity(dto, countryCode))
+			.toList();
+
+		holidayRepo.saveAll(entities);
+
+		Map<String,Object> result = new HashMap<>();
+		result.put("status","success");
+		result.put("deleted", "unknown");
+		result.put("country", countryCode);
+		result.put("year", year);
 		return result;
 	}
 

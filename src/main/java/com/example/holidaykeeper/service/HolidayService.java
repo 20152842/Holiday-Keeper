@@ -113,5 +113,13 @@ public class HolidayService {
 		return result;
 	}
 
+	@Transactional
+	public Map<String,Object> deleteYearCountry(int year, String countryCode) {
+		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
+		Map<String,Object> result = new HashMap<>();
+		result.put("status","success");
+		result.put("deleted", "unknown");
+		return result;
+	}
 
 }

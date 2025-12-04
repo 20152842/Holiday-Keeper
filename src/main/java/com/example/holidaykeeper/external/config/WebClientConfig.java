@@ -1,4 +1,4 @@
-package com.example.holidaykeeper.config;
+package com.example.holidaykeeper.external.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

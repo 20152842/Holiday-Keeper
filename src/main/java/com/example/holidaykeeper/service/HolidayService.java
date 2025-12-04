@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
+import com.example.holidaykeeper.external.service.ExternalNagerClient;
 import com.example.holidaykeeper.repository.CountryRepository;
 import com.example.holidaykeeper.repository.HolidayRepository;
 

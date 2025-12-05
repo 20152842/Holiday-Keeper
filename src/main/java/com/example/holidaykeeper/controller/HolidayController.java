@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.holidaykeeper.dto.HolidayDto;
 import com.example.holidaykeeper.dto.HolidayPageResponse;
+import com.example.holidaykeeper.dto.PageResponseDto;
 import com.example.holidaykeeper.dto.RefreshRequest;
+import com.example.holidaykeeper.dto.ResponseDto;
 import com.example.holidaykeeper.service.HolidayService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,12 +35,12 @@ import lombok.RequiredArgsConstructor;
 public class HolidayController {
 	private final HolidayService holidayService;
 	@PostMapping("/holidays")
-	public ResponseEntity<?> loadAll() {
-		Map<String, Object> res = holidayService.bulkLoadAllCountriesRecent5Years();
-		return ResponseEntity.ok(res);
+	public ResponseDto<?> loadAll() {
+		return ResponseDto.success(HttpStatus.OK, "5 년 × N 개 국가를 일괄 적재",
+			holidayService.bulkLoadAllCountriesRecent5Years());
 	}
 	@GetMapping("/holidays")
-	public ResponseEntity<?> search(
+	public PageResponseDto<?> search(
 		@RequestParam Optional<Integer> year,
 		@RequestParam Optional<String> country,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> from,
@@ -49,11 +52,10 @@ public class HolidayController {
 		int s = size.orElse(20);
 
 		Pageable pageable = PageRequest.of(p, s, Sort.by("date").ascending());
-		Page<HolidayDto> pageResult = holidayService.search(year, country, from, to, pageable);
-		HolidayPageResponse res = new HolidayPageResponse(pageResult.getNumber(), pageResult.getSize(), pageResult.getTotalElements(),
-			pageResult.getContent());
 
-		return ResponseEntity.ok(res);
+		Page<HolidayDto> resultPage = holidayService.search(year, country, from, to, pageable);
+
+		return new PageResponseDto<>(HttpStatus.OK, "검색 완료", resultPage);
 	}
 
 	@PutMapping("/holidays")

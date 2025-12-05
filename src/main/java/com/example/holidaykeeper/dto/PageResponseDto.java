@@ -16,7 +16,7 @@ public class PageResponseDto<T> {
 	private final List<T> data;
 	private final PaginationDto pagination;
 
-	public PageResponseDto(HttpStatus httpStatus, Page<T> page, String message) {
+	public PageResponseDto(HttpStatus httpStatus, String message, Page<T> page) {
 		this.code = httpStatus.value();
 		this.status = httpStatus.getReasonPhrase();
 		this.message = message;

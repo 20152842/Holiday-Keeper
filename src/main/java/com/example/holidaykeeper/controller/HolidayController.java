@@ -61,7 +61,7 @@ public class HolidayController {
 	@PutMapping("/holidays")
 	public ResponseDto<?> refresh(@RequestBody RefreshRequest req) {
 		return ResponseDto.success(HttpStatus.OK, "재동기화 완료",
-			holidayService.refreshYearCountry(req.getYear(), req.getCountry()));
+			holidayService.refreshHoliday(req.getYear(), req.getCountry()));
 	}
 
 	@DeleteMapping("/holidays")

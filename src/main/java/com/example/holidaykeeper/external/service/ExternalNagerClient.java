@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.holidaykeeper.external.dto.CountryResponse;
-import com.example.holidaykeeper.external.dto.NagerHolidayResponse;
+import com.example.holidaykeeper.external.dto.HolidayResponse;
 
 import lombok.RequiredArgsConstructor;
 @Service
@@ -28,11 +28,11 @@ public class ExternalNagerClient {
 	}
 
 	// 특정 연도 공휴일
-	public List<NagerHolidayResponse> getHolidaysByYearAndCountry(int year, String countryCode) {
+	public List<HolidayResponse> getHolidaysByYearAndCountry(int year, String countryCode) {
 		return nagerWebClient.get()
 			.uri("/PublicHolidays/{year}/{countryCode}", year, countryCode)
 			.retrieve()
-			.bodyToMono(new ParameterizedTypeReference<List<NagerHolidayResponse>>() {})
+			.bodyToMono(new ParameterizedTypeReference<List<HolidayResponse>>() {})
 			.block();
 	}
 

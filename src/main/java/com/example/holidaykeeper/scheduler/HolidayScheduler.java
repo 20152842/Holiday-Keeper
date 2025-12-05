@@ -37,8 +37,8 @@ public class HolidayScheduler {
 			for (Country country : allCountries) {
 				log.info("Sync start: country={}, years=[{}, {}]", country.getCode(), prevYear, currentYear);
 
-				Map<String, Object> prevRes = holidayService.refreshHoliday(country.getCode(), prevYear);
-				Map<String, Object> currRes = holidayService.refreshHoliday(country.getCode(), currentYear);
+				Map<String, Object> prevRes = holidayService.refreshHoliday(prevYear, country.getCode());
+				Map<String, Object> currRes = holidayService.refreshHoliday(currentYear, country.getCode());
 
 				log.info("Result (prev): {} -> {}", country.getCode(), prevRes);
 				log.info("Result (curr): {} -> {}", country.getCode(), currRes);

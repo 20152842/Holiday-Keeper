@@ -19,7 +19,7 @@ import com.example.holidaykeeper.dto.HolidayMapper;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
-import com.example.holidaykeeper.external.dto.NagerHolidayResponse;
+import com.example.holidaykeeper.external.dto.HolidayResponse;
 import com.example.holidaykeeper.external.service.ExternalNagerClient;
 import com.example.holidaykeeper.repository.CountryRepository;
 import com.example.holidaykeeper.repository.HolidayRepository;
@@ -38,13 +38,16 @@ public class HolidayService {
 		List<CountryResponse> countries = nagerClient.getAvailableCountries();
 		for (CountryResponse c : countries) {
 			countryRepo.findByCode(c.getCountryCode())
-				.orElseGet(() -> countryRepo.save(Country.builder().code(c.getCountryCode()).name(c.getName()).build()));
+				.orElseGet(() -> countryRepo.save(Country.builder()
+																	.code(c.getCountryCode())
+																	.name(c.getName())
+																	.build()));
 		}
 
 		int totalInserted = 0;
 		for (Integer year : TARGET_YEARS) {
 			for (CountryResponse c : countries) {
-				List<NagerHolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, c.getCountryCode());
+				List<HolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, c.getCountryCode());
 				if (holidays == null) continue;
 				List<Holiday> entities = holidays.stream().map(h -> {
 					return Holiday.builder()
@@ -104,8 +107,8 @@ public class HolidayService {
 	}
 
 	@Transactional
-	public Map<String,Object> refreshYearCountry(int year, String countryCode) {
-		List<NagerHolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
+	public Map<String,Object> refreshHoliday(int year, String countryCode) {
+		List<HolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
 		if (holidays == null) {
 			return Map.of("status","error","message","no data");
 		}
@@ -142,27 +145,8 @@ public class HolidayService {
 		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
 		Map<String,Object> result = new HashMap<>();
 		result.put("status","success");
-		result.put("deleted", "unknown");
-		return result;
-	}
-
-	public Map<String, Object> refreshHoliday(String countryCode, int year) {
-
-		List<NagerHolidayResponse> externalData = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
-
-		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
-
-		List<Holiday> entities = externalData.stream()
-			.map(dto -> HolidayMapper.toEntity(dto, countryCode))
-			.toList();
-
-		holidayRepo.saveAll(entities);
-
-		Map<String,Object> result = new HashMap<>();
-		result.put("status","success");
-		result.put("deleted", "unknown");
-		result.put("country", countryCode);
-		result.put("year", year);
+		result.put("deleted country", countryCode);
+		result.put("deleted year", year);
 		return result;
 	}
 

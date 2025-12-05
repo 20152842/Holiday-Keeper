@@ -5,11 +5,11 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 
 import com.example.holidaykeeper.entity.Holiday;
-import com.example.holidaykeeper.external.dto.NagerHolidayResponse;
+import com.example.holidaykeeper.external.dto.HolidayResponse;
 
 @Component
 public class HolidayMapper {
-	public static Holiday toEntity(NagerHolidayResponse dto, String countryCode) {
+	public static Holiday toEntity(HolidayResponse dto, String countryCode) {
 		return Holiday.builder()
 			.countryCode(countryCode)
 			.date(LocalDate.parse(dto.getDate()))

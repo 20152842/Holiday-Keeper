@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class NagerHolidayResponse {
+public class HolidayResponse {
 	public String date;
 	public String localName;
 	public String name;

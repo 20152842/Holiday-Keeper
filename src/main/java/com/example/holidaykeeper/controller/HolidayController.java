@@ -1,7 +1,6 @@
 package com.example.holidaykeeper.controller;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.holidaykeeper.dto.HolidayDto;
-import com.example.holidaykeeper.dto.HolidayPageResponse;
 import com.example.holidaykeeper.dto.PageResponseDto;
 import com.example.holidaykeeper.dto.RefreshRequest;
 import com.example.holidaykeeper.dto.ResponseDto;
@@ -34,11 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HolidayController {
 	private final HolidayService holidayService;
+
 	@PostMapping("/holidays")
 	public ResponseDto<?> loadAll() {
 		return ResponseDto.success(HttpStatus.OK, "5 년 × N 개 국가를 일괄 적재",
 			holidayService.bulkLoadAllCountriesRecent5Years());
 	}
+
 	@GetMapping("/holidays")
 	public PageResponseDto<?> search(
 		@RequestParam Optional<Integer> year,
@@ -46,7 +45,7 @@ public class HolidayController {
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> from,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> to,
 		@RequestParam Optional<Integer> page,
-		@RequestParam Optional<Integer> size){
+		@RequestParam Optional<Integer> size) {
 
 		int p = page.orElse(0);
 		int s = size.orElse(20);
@@ -55,7 +54,8 @@ public class HolidayController {
 
 		Page<HolidayDto> resultPage = holidayService.search(year, country, from, to, pageable);
 
-		return new PageResponseDto<>(HttpStatus.OK, "검색 완료", resultPage);
+		return resultPage.isEmpty() ? new PageResponseDto<>(HttpStatus.NOT_FOUND, "검색 실패", resultPage) :
+									new PageResponseDto<>(HttpStatus.OK, "검색 완료", resultPage);
 	}
 
 	@PutMapping("/holidays")

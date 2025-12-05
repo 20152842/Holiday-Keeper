@@ -1,7 +1,14 @@
 package com.example.holidaykeeper.controller;
 
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.holidaykeeper.dto.HolidayDto;
+import com.example.holidaykeeper.dto.HolidayPageResponse;
 import com.example.holidaykeeper.dto.RefreshRequest;
 import com.example.holidaykeeper.service.HolidayService;
 
@@ -28,8 +37,23 @@ public class HolidayController {
 		return ResponseEntity.ok(res);
 	}
 	@GetMapping("/holidays")
-	public ResponseEntity<?> search(){
-		return null;
+	public ResponseEntity<?> search(
+		@RequestParam Optional<Integer> year,
+		@RequestParam Optional<String> country,
+		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> from,
+		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> to,
+		@RequestParam Optional<Integer> page,
+		@RequestParam Optional<Integer> size){
+
+		int p = page.orElse(0);
+		int s = size.orElse(20);
+
+		Pageable pageable = PageRequest.of(p, s, Sort.by("date").ascending());
+		Page<HolidayDto> pageResult = holidayService.search(year, country, from, to, pageable);
+		HolidayPageResponse res = new HolidayPageResponse(pageResult.getNumber(), pageResult.getSize(), pageResult.getTotalElements(),
+			pageResult.getContent());
+
+		return ResponseEntity.ok(res);
 	}
 
 	@PutMapping("/holidays")

@@ -8,22 +8,19 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import com.example.holidaykeeper.service.CountryService;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Configuration
 @RequiredArgsConstructor
 public class CountryYearItemReader {
 	private final CountryService countryService;
 
-	// DTO
-	public record CountryYear(int year, String countryCode) {}
-
 	/**
-	STEP 'recent5YearsSyncStep' 의 Reader
+	 STEP 'recent5YearsSyncStep' 의 Reader
 	 */
 	@Bean
 	@StepScope
@@ -43,6 +40,16 @@ public class CountryYearItemReader {
 	 */
 	@Bean
 	@StepScope
+	// @StepScope 덕분에 JobParameter(prevYear, currentYear) 를 런타임에 주입받을 수 있음
+	/**
+	 * @StepScope + @Value 사용 시 규칙
+	 *
+	 * 이런 메서드는 직접 호출하면 안 되고,
+	 *
+	 * @Bean 으로 등록 → Step 에서 빈을 주입받아 사용해야 함
+	 *
+	 * 그래야 jobParameters['prevYear'] 같은 값이 런타임에 올바르게 주입됨
+	 */
 	public ItemReader<CountryYear> prevAndCurrentYearReader(
 		@Value("#{jobParameters['prevYear']}") Long prevYear,
 		@Value("#{jobParameters['currentYear']}") Long currentYear
@@ -55,5 +62,9 @@ public class CountryYearItemReader {
 			.toList();
 
 		return new ListItemReader<>(items);
+	}
+
+	// DTO
+	public record CountryYear(int year, String countryCode) {
 	}
 }

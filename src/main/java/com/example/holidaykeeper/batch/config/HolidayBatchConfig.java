@@ -77,7 +77,7 @@ public class HolidayBatchConfig {
 	@Bean
 	public Step recent5YearsSyncStep() {
 		return new StepBuilder("recent5YearsSyncStep", jobRepository)
-			.<CountryYear, CountryYearResult>chunk(5, transactionManager)
+			.<CountryYearItemReader.CountryYear, HolidaySyncProcessor.CountryYearResult>chunk(5, transactionManager)
 			.reader(countryYearItemReader.recent5YearsReader())
 			.processor(holidaySyncProcessor)
 			.writer(holidaySyncWriter)
@@ -93,7 +93,7 @@ public class HolidayBatchConfig {
 	@Bean
 	public Step prevCurrYearSyncStep() {
 		return new StepBuilder("prevCurrYearSyncStep", jobRepository)
-			.<CountryYear, CountryYearResult>chunk(5, transactionManager)
+			.<CountryYearItemReader.CountryYear, HolidaySyncProcessor.CountryYearResult>chunk(5, transactionManager)
 			.reader(countryYearItemReader.prevAndCurrentYearReader())
 			.processor(holidaySyncProcessor)
 			.writer(holidaySyncWriter)

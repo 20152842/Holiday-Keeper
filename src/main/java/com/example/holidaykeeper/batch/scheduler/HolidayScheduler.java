@@ -1,4 +1,4 @@
-package com.example.holidaykeeper.scheduler;
+package com.example.holidaykeeper.batch.scheduler;
 
 import java.time.LocalDate;
 import java.util.List;

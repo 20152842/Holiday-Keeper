@@ -65,10 +65,10 @@ public class HolidayBatchConfig {
 			.build();
 	}
 
-	/*
+	/**
 	Step -> “(year, countryCode) 조합”을 Chunk 단위로 처리
-	CountryYear : (year, countryCode) 한 건
 
+	CountryYear : (year, countryCode) 한 건
 	CountryYearResult : 해당 조합의 처리 결과 (ex : insert 건수 등) + List<Holiday>
 
 	Chunk 단위: “5개 CountryYear마다 한 번 커밋”

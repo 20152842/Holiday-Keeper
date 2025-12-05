@@ -45,6 +45,7 @@ public class HolidayController {
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> from,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> to,
 		@RequestParam Optional<Integer> page,
+		@RequestParam Optional<String> type,
 		@RequestParam Optional<Integer> size) {
 
 		int p = page.orElse(0);
@@ -52,7 +53,7 @@ public class HolidayController {
 
 		Pageable pageable = PageRequest.of(p, s, Sort.by("date").ascending());
 
-		Page<HolidayDto> resultPage = holidayService.search(year, country, from, to, pageable);
+		Page<HolidayDto> resultPage = holidayService.search(year, country, from, to, type, pageable);
 
 		return resultPage.isEmpty() ? new PageResponseDto<>(HttpStatus.NOT_FOUND, "검색 실패", resultPage) :
 									new PageResponseDto<>(HttpStatus.OK, "검색 완료", resultPage);

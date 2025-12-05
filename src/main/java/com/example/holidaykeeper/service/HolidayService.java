@@ -79,32 +79,64 @@ public class HolidayService {
 		return result;
 	}
 
-	public Page<HolidayDto> search(Optional<Integer> year, Optional<String> country,
-									Optional<LocalDate> from, Optional<LocalDate> to, Pageable pageable){
-		// 날짜 기간 검색
-		if (from.isPresent() && to.isPresent()) {
-			return holidayRepo.findByDateBetween(from.get(), to.get(), pageable)
-				.map(this::toDto);
-		}
+	/**
+	 * JPA Version
+	 */
+	// public Page<HolidayDto> search(Optional<Integer> year, Optional<String> country,
+	// 								Optional<LocalDate> from, Optional<LocalDate> to, Pageable pageable){
+	// 	// 날짜 기간 검색
+	// 	if (from.isPresent() && to.isPresent()) {
+	// 		return holidayRepo.findByDateBetween(from.get(), to.get(), pageable)
+	// 			.map(this::toDto);
+	// 	}
+	//
+	// 	// 국가 + 연도 검색
+	// 	if (country.isPresent() && year.isPresent()) {
+	// 		return holidayRepo.findByCountryCodeAndLaunchYear(
+	// 			country.get(),
+	// 			year.get(),
+	// 			pageable
+	// 		).map(this::toDto);
+	// 	}
+	//
+	// 	// 국가만 검색
+	// 	if (country.isPresent()) {
+	// 		return holidayRepo.findByCountryCode(country.get(), pageable)
+	// 			.map(this::toDto);
+	// 	}
+	//
+	// 	// 기본 전체 조회
+	// 	return holidayRepo.findAll(pageable).map(this::toDto);
+	// }
 
-		// 국가 + 연도 검색
-		if (country.isPresent() && year.isPresent()) {
-			return holidayRepo.findByCountryCodeAndLaunchYear(
-				country.get(),
-				year.get(),
-				pageable
-			).map(this::toDto);
-		}
+	/**
+	 * QueryDSL Version
+	 */
+	public Page<HolidayDto> search(Optional<Integer> year,
+		Optional<String> country,
+		Optional<LocalDate> from,
+		Optional<LocalDate> to,
+		Optional<String> type,
+		Pageable pageable) {
 
-		// 국가만 검색
-		if (country.isPresent()) {
-			return holidayRepo.findByCountryCode(country.get(), pageable)
-				.map(this::toDto);
-		}
+		Integer yearVal = year.orElse(null);
+		String countryVal = country.orElse(null);
+		LocalDate fromVal = from.orElse(null);
+		LocalDate toVal = to.orElse(null);
+		String typeVal = type.orElse(null);
 
-		// 기본 전체 조회
-		return holidayRepo.findAll(pageable).map(this::toDto);
+		Page<Holiday> page = holidayRepo.search(
+			yearVal,
+			countryVal,
+			fromVal,
+			toVal,
+			typeVal,
+			pageable
+		);
+
+		return page.map(this::toDto);
 	}
+
 
 	@Transactional
 	public Map<String,Object> refreshHoliday(int year, String countryCode) {

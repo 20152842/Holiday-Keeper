@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,6 @@ public class HolidayService {
 	private final ExternalNagerClient nagerClient;
 	private final CountryRepository countryRepo;
 	private final HolidayRepository holidayRepo;
-
 	private final List<Integer> TARGET_YEARS = List.of(2020,2021,2022,2023,2024,2025);
 	@Transactional
 	public Map<String, Object> bulkLoadAllCountriesRecent5Years() {
@@ -76,8 +76,31 @@ public class HolidayService {
 		return result;
 	}
 
-	public Page<HolidayDto> search(){
-		return null;
+	public Page<HolidayDto> search(Optional<Integer> year, Optional<String> country,
+									Optional<LocalDate> from, Optional<LocalDate> to, Pageable pageable){
+		// 날짜 기간 검색
+		if (from.isPresent() && to.isPresent()) {
+			return holidayRepo.findByDateBetween(from.get(), to.get(), pageable)
+				.map(this::toDto);
+		}
+
+		// 국가 + 연도 검색
+		if (country.isPresent() && year.isPresent()) {
+			return holidayRepo.findByCountryCodeAndLaunchYear(
+				country.get(),
+				year.get(),
+				pageable
+			).map(this::toDto);
+		}
+
+		// 국가만 검색
+		if (country.isPresent()) {
+			return holidayRepo.findByCountryCode(country.get(), pageable)
+				.map(this::toDto);
+		}
+
+		// 기본 전체 조회
+		return holidayRepo.findAll(pageable).map(this::toDto);
 	}
 
 	@Transactional
@@ -141,6 +164,10 @@ public class HolidayService {
 		result.put("country", countryCode);
 		result.put("year", year);
 		return result;
+	}
+
+	private HolidayDto toDto(Holiday h) {
+		return HolidayDto.fromEntity(h);
 	}
 
 }

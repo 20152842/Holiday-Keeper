@@ -39,6 +39,14 @@ public class HolidayBatchConfig {
 	 * Job 메서드는 그 Step 을 파라미터로 주입받아서 사용
 	 */
 
+	/**
+	스프링은 파라미터 이름 기반으로 Bean 이름을 찾아줄 수 있지만,
+	컴파일 옵션/IDE 설정에 따라 이름이 변경 혹은 제거 시 에러 발생 :
+	No qualifying bean of type 'ItemReader<CountryYear>' available:
+	 expected single matching bean but found 2: recent5YearsReader, prevAndCurrentYearReader
+
+	그래서 명시적으로 @Qualifier 권장
+	 */
 	// 1) 2020~2025 전체 적재 Job (수동 실행용)
 	@Bean
 	public Job recent5YearsSyncJob(

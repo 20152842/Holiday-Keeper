@@ -59,15 +59,15 @@ public class HolidayController {
 	}
 
 	@PutMapping("/holidays")
-	public ResponseEntity<?> refresh(@RequestBody RefreshRequest req) {
-		Map<String, Object> res = holidayService.refreshYearCountry(req.getYear(), req.getCountry());
-		return ResponseEntity.ok(res);
+	public ResponseDto<?> refresh(@RequestBody RefreshRequest req) {
+		return ResponseDto.success(HttpStatus.OK, "재동기화 완료",
+			holidayService.refreshYearCountry(req.getYear(), req.getCountry()));
 	}
 
 	@DeleteMapping("/holidays")
-	public ResponseEntity<?> delete(@RequestParam Integer year, @RequestParam String country) {
-		Map<String, Object> res = holidayService.deleteYearCountry(year, country);
-		return ResponseEntity.ok(res);
+	public ResponseDto<?> delete(@RequestParam Integer year, @RequestParam String country) {
+		return ResponseDto.success(HttpStatus.OK, "특정 연도·국가의 공휴일 레코드 전체 삭제",
+			holidayService.deleteYearCountry(year, country));
 	}
 
 }

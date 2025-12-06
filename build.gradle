@@ -56,7 +56,7 @@ dependencies {
 }
 
 // Q-Class 생성할 디렉토리 경로
-def queryDslSrcDir = 'src/main/generated/querydsl/'
+def queryDslSrcDir = 'src/main/java/com/example/holidaykeeper/generated/querydsl/'
 
 // JavaCompile Task 수행 시 생성되는 소스 코드 출력 디렉토리를 queryDslSrcDir로 설정
 tasks.withType(JavaCompile).configureEach {

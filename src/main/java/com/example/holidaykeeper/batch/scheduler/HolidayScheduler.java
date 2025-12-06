@@ -28,7 +28,7 @@ public class HolidayScheduler {
 	private final JobLauncher jobLauncher;
 	private final Job prevAndCurrentYearSyncJob; // BatchConfig에서 정의할 Job
 
-	@Scheduled(cron = "0 0 1 2 *", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 0 1 2 1 ?", zone = "Asia/Seoul")
 	public void syncPrevAndCurrentYear() {
 		int currentYear = LocalDate.now().getYear();
 		int prevYear = currentYear - 1;

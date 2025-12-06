@@ -32,7 +32,6 @@ public class HolidayService {
 	private final ExternalNagerClient nagerClient;
 	private final CountryRepository countryRepo;
 	private final HolidayRepository holidayRepo;
-	private final HolidayRepositoryImpl holidayRepositoryImpl;
 	private final List<Integer> TARGET_YEARS = List.of(2020,2021,2022,2023,2024,2025);
 	@Transactional
 	public Map<String, Object> bulkLoadAllCountriesRecent5Years() {
@@ -126,7 +125,7 @@ public class HolidayService {
 		LocalDate toVal = to.orElse(null);
 		String typeVal = type.orElse(null);
 
-		Page<Holiday> page = holidayRepositoryImpl.search(
+		Page<Holiday> page = holidayRepo.search(
 			yearVal,
 			countryVal,
 			fromVal,

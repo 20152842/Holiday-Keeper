@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface HolidayRepository extends JpaRepository<Holiday, Long> {
+public interface HolidayRepository extends JpaRepository<Holiday, Long>, HolidayRepositoryCustom  {
 	// 결과는 페이징 형태로 응답
 
 	// 연도별·국가별 필터 기반 공휴일 조회
@@ -25,6 +25,5 @@ public interface HolidayRepository extends JpaRepository<Holiday, Long> {
 	void deleteByCountryCodeAndDateBetween(String countryCode, LocalDate from, LocalDate to);
 
 	boolean existsByCountryCodeAndDate(String countryCode, LocalDate date);
-
 
 }

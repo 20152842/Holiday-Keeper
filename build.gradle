@@ -30,7 +30,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui' // OpenAPI
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -41,7 +40,6 @@ dependencies {
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 

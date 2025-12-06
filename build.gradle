@@ -67,7 +67,7 @@ tasks.withType(JavaCompile).configureEach {
 // Q-Class가 일반 java class로 취급되어 컴파일 & 실행 시 classpath에 추가
 sourceSets {
     main {
-        java.srcDir querydslDir
+        java.srcDir queryDslSrcDir
     }
 }
 

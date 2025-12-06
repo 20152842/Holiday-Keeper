@@ -15,15 +15,10 @@ public class HolidayResponse {
 	public String date;
 	public String localName;
 	public String name;
+	public String countryCode;
 	public boolean global;
 	public boolean fixed;
 	public List<String> counties;
+	public Integer launchYear;
 	public List<String> types;
-
-	public Boolean getGlobal() {
-		return null;
-	}
-	public Boolean getFixed() {
-		return null;
-	}
 }

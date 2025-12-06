@@ -23,7 +23,7 @@ public class HolidayRepositoryImpl implements HolidayRepositoryCustom {
 
 	@Override
 	public Page<Holiday> search(
-		Integer year,
+		Integer launchYear,
 		String countryCode,
 		LocalDate from,
 		LocalDate to,
@@ -34,8 +34,8 @@ public class HolidayRepositoryImpl implements HolidayRepositoryCustom {
 
 		BooleanBuilder builder = new BooleanBuilder();
 
-		if (year != null) {
-			builder.and(h.launchYear.eq(year));
+		if (launchYear != null) {
+			builder.and(h.launchYear.eq(launchYear));
 		}
 
 		if (countryCode != null && !countryCode.isBlank()) {

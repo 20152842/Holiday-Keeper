@@ -9,7 +9,7 @@ import com.example.holidaykeeper.entity.Holiday;
 
 public interface HolidayRepositoryCustom {
 	Page<Holiday> search(
-		Integer year,
+		Integer launchYear,
 		String countryCode,
 		LocalDate from,
 		LocalDate to,

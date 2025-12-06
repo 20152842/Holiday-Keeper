@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.holidaykeeper.dto.HolidayDto;
-import com.example.holidaykeeper.dto.HolidayMapper;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
@@ -39,9 +38,9 @@ public class HolidayService {
 	public Map<String, Object> bulkLoadAllCountriesRecent5Years() {
 		List<CountryResponse> countries = nagerClient.getAvailableCountries();
 		for (CountryResponse c : countries) {
-			countryRepo.findByCode(c.getCountryCode())
+			countryRepo.findByCountryCode(c.getCountryCode())
 				.orElseGet(() -> countryRepo.save(Country.builder()
-																	.code(c.getCountryCode())
+																	.countryCode(c.getCountryCode())
 																	.name(c.getName())
 																	.build()));
 		}
@@ -57,9 +56,8 @@ public class HolidayService {
 						.date(LocalDate.parse(h.getDate()))
 						.localName(h.getLocalName())
 						.name(h.getName())
-						// fixed / global 임시처리
-						.fixed(h.getFixed())
-						.global(h.getGlobal())
+						.fixed(h.isFixed())
+						.global(h.isGlobal())
 						.type(String.join(",", Optional.ofNullable(h.getTypes()).orElse(Collections.emptyList())))
 						.counties(h.getCounties() == null ? null : String.join(",", h.getCounties()))
 						.launchYear(year)
@@ -115,14 +113,14 @@ public class HolidayService {
 	 * QueryDSL Version
 	 */
 	public Page<HolidayDto> search(
-		Optional<Integer> year,
+		Optional<Integer> launchYear,
 		Optional<String> country,
 		Optional<LocalDate> from,
 		Optional<LocalDate> to,
 		Optional<String> type,
 		Pageable pageable) {
 
-		Integer yearVal = year.orElse(null);
+		Integer yearVal = launchYear.orElse(null);
 		String countryVal = country.orElse(null);
 		LocalDate fromVal = from.orElse(null);
 		LocalDate toVal = to.orElse(null);
@@ -155,9 +153,8 @@ public class HolidayService {
 				.date(LocalDate.parse(h.getDate()))
 				.localName(h.getLocalName())
 				.name(h.getName())
-				// fixed / global 임시처리
-				.fixed(h.getFixed())
-				.global(h.getGlobal())
+				.fixed(h.isFixed())
+				.global(h.isGlobal())
 				.type(String.join(",", Optional.ofNullable(h.getTypes()).orElse(Collections.emptyList())))
 				.counties(h.getCounties() == null ? null : String.join(",", h.getCounties()))
 				.launchYear(year)

@@ -17,7 +17,7 @@ public class CountryService {
 
 	public List<String> getAllCountryCodes() {
 		return countryRepository.findAll().stream()
-			.map(Country::getCode)
+			.map(Country::getCountryCode)
 			.toList();
 	}
 }

@@ -44,8 +44,8 @@ public class HolidayController {
 		@RequestParam Optional<String> country,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> from,
 		@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> to,
-		@RequestParam Optional<Integer> page,
 		@RequestParam Optional<String> type,
+		@RequestParam Optional<Integer> page,
 		@RequestParam Optional<Integer> size) {
 
 		int p = page.orElse(0);

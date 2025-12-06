@@ -23,6 +23,7 @@ import com.example.holidaykeeper.external.dto.HolidayResponse;
 import com.example.holidaykeeper.external.service.ExternalNagerClient;
 import com.example.holidaykeeper.repository.CountryRepository;
 import com.example.holidaykeeper.repository.HolidayRepository;
+import com.example.holidaykeeper.repository.HolidayRepositoryImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public class HolidayService {
 	private final ExternalNagerClient nagerClient;
 	private final CountryRepository countryRepo;
 	private final HolidayRepository holidayRepo;
+	private final HolidayRepositoryImpl holidayRepositoryImpl;
 	private final List<Integer> TARGET_YEARS = List.of(2020,2021,2022,2023,2024,2025);
 	@Transactional
 	public Map<String, Object> bulkLoadAllCountriesRecent5Years() {
@@ -112,7 +114,8 @@ public class HolidayService {
 	/**
 	 * QueryDSL Version
 	 */
-	public Page<HolidayDto> search(Optional<Integer> year,
+	public Page<HolidayDto> search(
+		Optional<Integer> year,
 		Optional<String> country,
 		Optional<LocalDate> from,
 		Optional<LocalDate> to,
@@ -125,7 +128,7 @@ public class HolidayService {
 		LocalDate toVal = to.orElse(null);
 		String typeVal = type.orElse(null);
 
-		Page<Holiday> page = holidayRepo.search(
+		Page<Holiday> page = holidayRepositoryImpl.search(
 			yearVal,
 			countryVal,
 			fromVal,

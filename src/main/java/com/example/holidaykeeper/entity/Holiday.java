@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "holidays", uniqueConstraints =
-	@UniqueConstraint(columnNames = {"country_code", "date"})
+	@UniqueConstraint(columnNames = {"country_code", "date", "name"})
 )
 @Getter
 @Setter

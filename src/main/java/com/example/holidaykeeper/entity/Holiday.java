@@ -5,9 +5,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "holidays", uniqueConstraints =
-	@UniqueConstraint(columnNames = {"country_code", "date", "name"})
-)
+@Table(name = "holidays")
 @Getter
 @Setter
 @NoArgsConstructor

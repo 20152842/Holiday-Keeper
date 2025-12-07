@@ -62,7 +62,7 @@
 | GET | /api/v1/holidays | 없음 (Query 사용)<br>year, country, from, to, type, page, size | json<br>{<br>&nbsp;&nbsp;"page": 0,<br>&nbsp;&nbsp;"size": 20,<br>&nbsp;&nbsp;"total": 42,<br>&nbsp;&nbsp;"items": [<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2025-01-01",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"localName": "신정",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"englishName": "New Year's Day",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"countryCode": "KR",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"global": true,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"fixed": true,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"types": ["Public"]<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;]<br>} | 공휴일 검색 (필터 & 페이징) |
 | PUT | /api/v1/holidays | json<br>{<br>&nbsp;&nbsp;"year": 2025,<br>&nbsp;&nbsp;"country": "KR"<br>} | json<br>{<br>&nbsp;&nbsp;"status": "success",<br>&nbsp;&nbsp;"year": 2025,<br>&nbsp;&nbsp;"country": "KR",<br>&nbsp;&nbsp;"updatedCount": 17<br>} | 특정 연도·국가 공휴일 재동기화 (Upsert) |
 | DELETE | /api/v1/holidays | 없음 (Query 사용)<br>year, country | json<br>{<br>&nbsp;&nbsp;"status": "success",<br>&nbsp;&nbsp;"deleted": 17<br>} | 특정 연도·국가 공휴일 전체 삭제 |
-| CRON | (자동 실행)<br>0 0 1 2 * | 없음 | json<br>{<br>&nbsp;&nbsp;"status": "success",<br>&nbsp;&nbsp;"syncedYears": [2024, 2025],<br>&nbsp;&nbsp;"countries": 110<br>} | 매년 1/2 01:00 전년도·금년도 공휴일 자동 동기화 |
+| CRON | (자동 실행)<br>0 0 1 2 1 ? | 없음 | json<br>{<br>&nbsp;&nbsp;"status": "success",<br>&nbsp;&nbsp;"syncedYears": [2024, 2025],<br>&nbsp;&nbsp;"countries": 110<br>} | 매년 1 월 2 일 01:00 KST 에 전년도·금년도 데이터를 자동 동기화 |
 
 ---
 

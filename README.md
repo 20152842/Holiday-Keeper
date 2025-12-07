@@ -38,7 +38,7 @@
 
 <img width="1872" height="388" alt="image" src="https://github.com/user-attachments/assets/9670dc7b-06b0-4c61-b523-8169c9ab6bfe" />
 
-### 5) Swagger UI & OpenAPI JSON 확인
+### 5) Swagger UI & OpenAPI JSON & H2 Console
 ```
 - 기본 포트: http://localhost:8080
 
@@ -46,7 +46,7 @@
 
 - OpenAPI JSON: http://localhost:8080/v3/api-docs
 
- - H2 Console: http://localhost:8080/h2-console
+- H2 Console: http://localhost:8080/h2-console
   - Driver: org.h2.Driver
   - JDBC URL: jdbc:h2:mem:holidaydb
   - User Name: test

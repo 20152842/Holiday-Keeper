@@ -45,6 +45,12 @@
 - Swagger UI: http://localhost:8080/swagger-ui/index.html
 
 - OpenAPI JSON: http://localhost:8080/v3/api-docs
+
+ - H2 Console: http://localhost:8080/h2-console
+  - Driver: org.h2.Driver
+  - JDBC URL: jdbc:h2:mem:holidaydb
+  - User Name: test
+  - Password: 1234
 ```
 ---
 

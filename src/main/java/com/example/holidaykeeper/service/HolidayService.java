@@ -142,8 +142,14 @@ public class HolidayService {
 	@Transactional
 	public HolidaySyncResultDto refreshHoliday(int year, String countryCode) {
 		List<HolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
-		if (holidays == null) {
-			throw new IllegalStateException("No data from API");
+
+		if (holidays == null || holidays.isEmpty()) {
+			return HolidaySyncResultDto.builder()
+				.year(year)
+				.country(countryCode)
+				.updatedCount(0)
+				.status("error")
+				.build();
 		}
 		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
 

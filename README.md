@@ -18,6 +18,24 @@
 별도의 ***인증‧API Key가 전혀 필요 없습니다.***
 
 ---
+## 🏃 빌드 & 실행 방법
+
+### 1) 환경 요구사항
+
+  - Java 21
+  - Gradle Wrapper (`./gradlew`) 사용
+  - DB: 인메모리 H2 (추가 설치 불필요)
+
+### 2) 빌드
+
+  ./gradlew clean build
+
+### 3) 실행
+
+  ./gradlew bootRun
+
+
+---
 
 ## 📌 REST API 명세 요약
 

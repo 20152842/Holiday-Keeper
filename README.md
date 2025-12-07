@@ -28,11 +28,11 @@
 
 ### 2) 빌드
 ```
-  ./gradlew clean build
+./gradlew clean build
 ```
 ### 3) 실행
 ```
-  ./gradlew bootRun
+ ./gradlew bootRun
 ```
 ---
 

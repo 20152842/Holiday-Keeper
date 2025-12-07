@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.holidaykeeper.dto.HolidayDto;
+import com.example.holidaykeeper.dto.HolidaySyncResultDto;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
@@ -139,10 +140,10 @@ public class HolidayService {
 
 
 	@Transactional
-	public Map<String,Object> refreshHoliday(int year, String countryCode) {
+	public HolidaySyncResultDto refreshHoliday(int year, String countryCode) {
 		List<HolidayResponse> holidays = nagerClient.getHolidaysByYearAndCountry(year, countryCode);
 		if (holidays == null) {
-			return Map.of("status","error","message","no data");
+			throw new IllegalStateException("No data from API");
 		}
 		holidayRepo.deleteByCountryCodeAndLaunchYear(countryCode, year);
 
@@ -163,12 +164,12 @@ public class HolidayService {
 
 		holidayRepo.saveAll(entities);
 
-		Map<String,Object> result = new HashMap<>();
-		result.put("status","success");
-		result.put("years", year);
-		result.put("country", countryCode);
-		result.put("updatedCount", entities.size());
-		return result;
+		return HolidaySyncResultDto.builder()
+			.year(year)
+			.country(countryCode)
+			.updatedCount(entities.size())
+			.status("success")
+			.build();
 	}
 
 	@Transactional

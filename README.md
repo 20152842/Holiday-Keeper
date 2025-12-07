@@ -38,11 +38,14 @@
 
 <img width="1872" height="388" alt="image" src="https://github.com/user-attachments/assets/9670dc7b-06b0-4c61-b523-8169c9ab6bfe" />
 
-### 5) Swagger UI 확인
+### 5) Swagger UI & OpenAPI JSON 확인
 ```
-http://localhost:8080/swagger-ui/index.html
-```
+- 기본 포트: http://localhost:8080
 
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+```
 ---
 
 ## 📌 REST API 명세 요약

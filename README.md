@@ -97,4 +97,14 @@
 | launch_year | int | 최초 지정 연도 |
 | created_at | timestamp | 등록일 |
 
+---
+## 📄 참고 자료
+
+Spring Test - https://soonmin.tistory.com/85
+
+Spring QueryDsl - https://adjh54.tistory.com/484
+
+Spring Batch - https://jh2021.tistory.com/44, https://github.com/ljh468/roaming-data-synchronizer?tab=readme-ov-file#%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%B0%8F-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85
+          
+
 

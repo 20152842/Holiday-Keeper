@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.example.holidaykeeper.dto.HolidayDto;
+import com.example.holidaykeeper.dto.HolidaySyncResultDto;
 import com.example.holidaykeeper.entity.Country;
 import com.example.holidaykeeper.entity.Holiday;
 import com.example.holidaykeeper.external.dto.CountryResponse;
@@ -196,13 +197,13 @@ class HolidayServiceTest {
 		ArgumentCaptor<List<Holiday>> captor = ArgumentCaptor.forClass(List.class);
 
 		// when
-		Map<String, Object> result = holidayService.refreshHoliday(year, countryCode);
+		HolidaySyncResultDto result = holidayService.refreshHoliday(year, countryCode);
 
 		// then
-		assertThat(result.get("status")).isEqualTo("success");
-		assertThat(result.get("years")).isEqualTo(year);
-		assertThat(result.get("country")).isEqualTo(countryCode);
-		assertThat(result.get("updatedCount")).isEqualTo(1);
+		assertThat(result.getStatus()).isEqualTo("success");
+		assertThat(result.getYear()).isEqualTo(year);
+		assertThat(result.getCountry()).isEqualTo(countryCode);
+		assertThat(result.getUpdatedCount()).isEqualTo(1);
 
 		// 기존 데이터 삭제 후 저장 호출 검증
 		then(holidayRepo).should()
@@ -229,11 +230,10 @@ class HolidayServiceTest {
 			.willReturn(null);
 
 		// when
-		Map<String, Object> result = holidayService.refreshHoliday(year, countryCode);
+		HolidaySyncResultDto result = holidayService.refreshHoliday(year, countryCode);
 
 		// then
-		assertThat(result.get("status")).isEqualTo("error");
-		assertThat(result.get("message")).isEqualTo("no data");
+		assertThat(result.getStatus()).isEqualTo("error");
 
 		// delete/saveAll 이 호출되지 않았는지 검증
 		then(holidayRepo).should(never())

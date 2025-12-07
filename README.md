@@ -18,7 +18,7 @@
 별도의 ***인증‧API Key가 전혀 필요 없습니다.***
 
 ---
-## 🏃 빌드 & 실행 방법
+## 🏃 빌드 & 실행 방법 & 실행 결과
 
 ### 1) 환경 요구사항
 
@@ -34,6 +34,15 @@
 ```
  ./gradlew bootRun
 ```
+### 4) ./gradlew clean test 성공 스크린샷
+
+<img width="1872" height="388" alt="image" src="https://github.com/user-attachments/assets/9670dc7b-06b0-4c61-b523-8169c9ab6bfe" />
+
+### 5) Swagger UI 확인
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
 ---
 
 ## 📌 REST API 명세 요약
